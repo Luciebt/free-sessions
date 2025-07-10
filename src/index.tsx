@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
+import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import theme from './styles/theme';
@@ -8,7 +9,7 @@ import theme from './styles/theme';
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
-    font-family: ${theme.typography.fontFamily};
+    
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: ${theme.colors.text};
