@@ -27,10 +27,6 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
         </h3>
         <p className="text-text text-base mb-4 flex-grow">{therapist.bio}</p>
         <p className="text-lightText text-sm mb-2 flex items-center">
-          <FaLanguage className="mr-2 text-primary text-lg" />{" "}
-          {therapist.languages.join(", ")}
-        </p>
-        <p className="text-lightText text-sm mb-2 flex items-center">
           <FaStar className="mr-2 text-primary text-lg" />{" "}
           {therapist.specialties.join(", ")}
         </p>
@@ -38,18 +34,6 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
           <FaUsers className="mr-2 text-primary text-lg" />
           {therapist.targetGroups.join(", ")}
         </p>
-        {therapist.location.city && (
-          <p className="text-lightText text-sm mb-2 flex items-center">
-            <FaMapMarkerAlt className="mr-2 text-primary text-lg" />
-            {therapist.location.city}, {therapist.location.country}
-          </p>
-        )}
-        {therapist.location.onlineOnly && (
-          <p className="text-lightText text-sm mb-2 flex items-center">
-            <FaGlobe className="mr-2 text-primary text-lg" />
-            <strong>Online only</strong>
-          </p>
-        )}
         {therapist.busy !== undefined && (
           <p className="text-lightText text-sm mb-2 flex items-center">
             <FaCalendarCheck className="mr-2 text-primary text-lg" />
@@ -70,6 +54,25 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
           </p>
         )}
       </div>
+      <div className="flex flex-wrap gap-2 mt-4">
+        {therapist.languages.length > 0 && (
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-primary text-xs font-medium">
+            <FaLanguage className="mr-1" /> {therapist.languages.join(", ")}
+          </div>
+        )}
+        {therapist.location.city && (
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-primary text-xs font-medium">
+            <FaMapMarkerAlt className="mr-1" /> {therapist.location.city},{" "}
+            {therapist.location.country}
+          </div>
+        )}
+        {therapist.location.onlineOnly && (
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-primary text-xs font-medium">
+            <FaGlobe className="mr-1" /> Online Only
+          </div>
+        )}
+      </div>
     </Link>
   );
 };
+

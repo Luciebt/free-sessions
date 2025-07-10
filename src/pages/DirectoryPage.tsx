@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Therapist } from "types/Therapist";
-import { getAllTherapists, updateTherapist } from "services/therapistService";
+import { getAllTherapists } from "services/therapistService";
 import { TherapistCard } from "features/directory/TherapistCard";
 import { useAuth } from "../features/auth/AuthContext";
-import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
+import { FaLanguage, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
 
 const DirectoryPage: React.FC = () => {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
@@ -80,11 +80,6 @@ const DirectoryPage: React.FC = () => {
 
     applyFilters();
   }, [therapists, filters]);
-
-  const handleApprove = async (therapist: Therapist) => {
-    await updateTherapist(therapist.id, { approved: true });
-    fetchAllTherapists();
-  };
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -252,3 +247,4 @@ const DirectoryPage: React.FC = () => {
 };
 
 export default DirectoryPage;
+
