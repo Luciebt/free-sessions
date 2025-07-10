@@ -1,64 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import { Therapist } from "../types/Therapist";
 import { getTherapist, updateTherapist } from "../services/therapistService";
 import { useAuth } from "../features/auth/AuthContext";
-import theme from "../styles/theme";
 import Button from "../components/common/Button";
-
-const ProfileContainer = styled.div`
-  padding: ${theme.spacing.xLarge};
-  background-color: ${theme.colors.background};
-  min-height: calc(100vh - 120px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const ProfileCard = styled.div`
-  background-color: ${theme.colors.white};
-  border-radius: ${theme.borderRadius};
-  box-shadow: ${theme.boxShadow};
-  padding: ${theme.spacing.xLarge};
-  width: 100%;
-  max-width: 800px;
-  text-align: left;
-`;
-
-const Name = styled.h1`
-  color: ${theme.colors.primary};
-  font-size: ${theme.typography.h1.fontSize};
-  margin-bottom: ${theme.spacing.medium};
-`;
-
-const Bio = styled.p`
-  color: ${theme.colors.text};
-  font-size: ${theme.typography.body.fontSize};
-  line-height: ${theme.typography.body.lineHeight};
-  margin-bottom: ${theme.spacing.large};
-`;
-
-const DetailItem = styled.p`
-  color: ${theme.colors.text};
-  font-size: ${theme.typography.body.fontSize};
-  margin-bottom: ${theme.spacing.small};
-  strong {
-    color: ${theme.colors.primary};
-  }
-`;
-
-const BookingButton = styled(Button)`
-  width: 100%;
-  padding: ${theme.spacing.medium} ${theme.spacing.large};
-  font-size: 1.2rem;
-  margin-top: ${theme.spacing.xLarge};
-  background-color: ${theme.colors.secondary};
-  &:hover {
-    background-color: ${theme.colors.primary};
-  }
-`;
 
 const TherapistProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -92,66 +37,67 @@ const TherapistProfilePage: React.FC = () => {
   };
 
   if (loading) {
-    return <ProfileContainer>Loading therapist profile...</ProfileContainer>;
+    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">Loading therapist profile...</div>;
   }
 
   if (error) {
-    return <ProfileContainer>{error}</ProfileContainer>;
+    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">{error}</div>;
   }
 
   if (!therapist) {
-    return <ProfileContainer>Therapist not found.</ProfileContainer>;
+    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">Therapist not found.</div>;
   }
 
   return (
-    <ProfileContainer>
-      <ProfileCard>
-        <Name>{therapist.fullName}</Name>
-        <Bio>{therapist.bio}</Bio>
-        <DetailItem>
-          <strong>Languages:</strong> {therapist.languages.join(", ")}
-        </DetailItem>
-        <DetailItem>
-          <strong>Specialties:</strong> {therapist.specialties.join(", ")}
-        </DetailItem>
-        <DetailItem>
-          <strong>Target Groups:</strong> {therapist.targetGroups.join(", ")}
-        </DetailItem>
+    <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
+      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-4xl text-left">
+        <h1 className="text-primary text-3xl font-bold mb-4">{therapist.fullName}</h1>
+        <p className="text-text text-base leading-relaxed mb-6">{therapist.bio}</p>
+        <p className="text-text text-base mb-2">
+          <strong className="text-primary">Languages:</strong> {therapist.languages.join(", ")}
+        </p>
+        <p className="text-text text-base mb-2">
+          <strong className="text-primary">Specialties:</strong> {therapist.specialties.join(", ")}
+        </p>
+        <p className="text-text text-base mb-2">
+          <strong className="text-primary">Target Groups:</strong> {therapist.targetGroups.join(", ")}
+        </p>
         {therapist.location.city && (
-          <DetailItem>
-            <strong>Location:</strong> {therapist.location.city},{" "}
+          <p className="text-text text-base mb-2">
+            <strong className="text-primary">Location:</strong> {therapist.location.city},{" "}
             {therapist.location.country}
-          </DetailItem>
+          </p>
         )}
         {therapist.location.onlineOnly && (
-          <DetailItem>
-            <strong>Online Only:</strong> Yes
-          </DetailItem>
+          <p className="text-text text-base mb-2">
+            <strong className="text-primary">Online Only:</strong> Yes
+          </p>
         )}
         {therapist.busy !== undefined && (
-          <DetailItem>
+          <p className="text-text text-base mb-2">
             <strong>Status:</strong> {therapist.busy ? 'Busy' : 'Available'}
-          </DetailItem>
+          </p>
         )}
         {therapist.personalLink && (
-          <DetailItem>
-            <strong>Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">{therapist.personalLink}</a>
-          </DetailItem>
+          <p className="text-text text-base mb-2">
+            <strong className="text-primary">Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">{therapist.personalLink}</a>
+          </p>
         )}
-        <BookingButton
+        <Button
           onClick={() => window.open(therapist.schedulingLink, "_blank")}
           disabled={!therapist.schedulingLink}
+          className="w-full py-3 text-lg mt-8"
         >
           Book a Session
-        </BookingButton>
+        </Button>
 
         {isAdmin && !therapist.approved && (
-          <BookingButton onClick={handleApprove} variant="secondary">
+          <Button onClick={handleApprove} variant="secondary" className="w-full py-3 text-lg mt-4">
             Approve Therapist
-          </BookingButton>
+          </Button>
         )}
-      </ProfileCard>
-    </ProfileContainer>
+      </div>
+    </div>
   );
 };
 

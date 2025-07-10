@@ -1,50 +1,30 @@
 import React from 'react';
-import styled from 'styled-components';
-import theme from '../../styles/theme';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'text';
 }
 
-const StyledButton = styled.button<ButtonProps>`
-  padding: ${theme.spacing.small} ${theme.spacing.medium};
-  border-radius: ${theme.borderRadius};
-  border: none;
-  cursor: pointer;
-  font-family: ${theme.typography.fontFamily};
-  font-size: ${theme.typography.body.fontSize};
-  transition: background-color 0.3s ease;
+const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', className, ...props }) => {
+  let buttonClasses = "py-2 px-4 rounded-md border-none cursor-pointer transition duration-300 ease-in-out text-base font-medium ";
 
-  ${props => props.variant === 'primary' && `
-    background-color: ${theme.colors.primary};
-    color: ${theme.colors.white};
-    &:hover {
-      background-color: ${theme.colors.secondary};
-    }
-  `}
+  switch (variant) {
+    case 'primary':
+      buttonClasses += "bg-primary text-white hover:bg-secondary";
+      break;
+    case 'secondary':
+      buttonClasses += "bg-secondary text-white hover:bg-primary";
+      break;
+    case 'text':
+      buttonClasses += "bg-transparent text-primary hover:text-secondary";
+      break;
+    default:
+      buttonClasses += "bg-primary text-white hover:bg-secondary";
+  }
 
-  ${props => props.variant === 'secondary' && `
-    background-color: ${theme.colors.secondary};
-    color: ${theme.colors.white};
-    &:hover {
-      background-color: ${theme.colors.primary};
-    }
-  `}
-
-  ${props => props.variant === 'text' && `
-    background-color: transparent;
-    color: ${theme.colors.primary};
-    &:hover {
-      color: ${theme.colors.secondary};
-    }
-  `}
-`;
-
-const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', ...props }) => {
   return (
-    <StyledButton variant={variant} {...props}>
+    <button className={`${buttonClasses} ${className || ''}`} {...props}>
       {children}
-    </StyledButton>
+    </button>
   );
 };
 
