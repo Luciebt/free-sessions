@@ -1,9 +1,8 @@
-
-import React from 'react';
-import styled from 'styled-components';
-import { useAuth } from 'features/auth/AuthContext';
-import { signOut } from 'services/authService';
-import theme from '../../styles/theme';
+import React from "react";
+import styled from "styled-components";
+import { useAuth } from "features/auth/AuthContext";
+import { signOut } from "services/authService";
+import theme from "../../styles/theme";
 
 const HeaderContainer = styled.header`
   background-color: ${theme.colors.primary};
@@ -21,7 +20,8 @@ const Logo = styled.h1`
 `;
 
 const Nav = styled.nav`
-  a, button {
+  a,
+  button {
     margin-left: ${theme.spacing.medium};
     text-decoration: none;
     color: ${theme.colors.white};
@@ -36,8 +36,6 @@ const Nav = styled.nav`
   }
 `;
 
-const ADMIN_EMAIL = 'admin@example.com';
-
 export const Header: React.FC = () => {
   const { session } = useAuth();
 
@@ -50,7 +48,9 @@ export const Header: React.FC = () => {
         {session ? (
           <>
             <a href="/dashboard">Dashboard</a>
-            {session.user.email === ADMIN_EMAIL && <a href="/admin">Admin</a>}
+            {session.user.email === process.env.REACT_APP_ADMIN_EMAIL && (
+              <a href="/admin">Admin</a>
+            )}
             <button onClick={signOut}>Sign Out</button>
           </>
         ) : (

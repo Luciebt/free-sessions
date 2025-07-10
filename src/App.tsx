@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import { Header } from 'components/layout/Header';
 import { Footer } from 'components/layout/Footer';
 import { HomePage } from 'pages/HomePage';
-import { DirectoryPage } from 'pages/DirectoryPage';
-import { LoginPage } from 'pages/LoginPage';
-import { DashboardPage } from 'pages/DashboardPage';
-import { AdminPage } from 'pages/AdminPage';
-import { AuthProvider } from 'features/auth/AuthContext';
-import { ProtectedRoute } from 'features/auth/ProtectedRoute';
+import { DirectoryPage } from './pages/DirectoryPage';
+import { LoginPage } from './pages/LoginPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { AdminPage } from './pages/AdminPage';
+import { TherapistProfilePage } from './pages/TherapistProfilePage';
+import { AuthProvider } from './features/auth/AuthContext';
+import { ProtectedRoute } from './features/auth/ProtectedRoute';
 import './App.css';
 
 const AppContainer = styled.div`
@@ -34,6 +35,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/directory" element={<DirectoryPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/therapist/:id" element={<TherapistProfilePage />} />
               <Route
                 path="/dashboard"
                 element={

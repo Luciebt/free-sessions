@@ -38,3 +38,8 @@ export const updateTherapist = async (id: string, therapist: Partial<Therapist>)
   if (error) throw error;
   return data;
 };
+
+export const deleteTherapist = async (id: string): Promise<void> => {
+  const { error } = await supabase.from('therapists').delete().eq('id', id);
+  if (error) throw error;
+};

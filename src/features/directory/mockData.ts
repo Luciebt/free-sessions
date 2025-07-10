@@ -1,4 +1,3 @@
-
 import { Therapist } from 'types/Therapist';
 
 export const mockTherapists: Therapist[] = [

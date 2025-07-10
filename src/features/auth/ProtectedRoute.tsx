@@ -1,18 +1,18 @@
-
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from 'features/auth/AuthContext';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "features/auth/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
 }
 
-// This is a simple way to manage admin access. 
-// In a real app, this would be a role in the database.
-const ADMIN_EMAIL = 'admin@example.com'; 
+const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL;
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly }) => {
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  adminOnly,
+}) => {
   const { session, loading } = useAuth();
 
   if (loading) {
