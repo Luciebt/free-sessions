@@ -36,7 +36,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
-export const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {
   const { session } = useAuth();
   const isAdmin = session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
 
@@ -57,3 +57,5 @@ export const HomePage: React.FC = () => {
     </HomeContainer>
   );
 };
+
+export default HomePage;

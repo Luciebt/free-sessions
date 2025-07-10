@@ -71,7 +71,7 @@ const ActionButton = styled(Button)`
   font-size: 0.9rem;
 `;
 
-export const AdminPage: React.FC = () => {
+const AdminPage: React.FC = () => {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [editingTherapist, setEditingTherapist] = useState<Therapist | null>(null);
 
@@ -251,3 +251,5 @@ export const AdminPage: React.FC = () => {
     </AdminContainer>
   );
 };
+
+export default AdminPage;

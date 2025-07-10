@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { signIn, signUp } from 'services/authService';
@@ -33,7 +32,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
@@ -77,3 +76,5 @@ export const LoginPage: React.FC = () => {
     </LoginContainer>
   );
 };
+
+export default LoginPage;

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useAuth } from 'features/auth/AuthContext';
@@ -35,7 +34,7 @@ const ActionButton = styled(Button)`
   margin-top: ${theme.spacing.medium};
 `;
 
-export const DashboardPage: React.FC = () => {
+const DashboardPage: React.FC = () => {
   const { session } = useAuth();
   const [therapistProfile, setTherapistProfile] = useState<Therapist | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -129,3 +128,5 @@ export const DashboardPage: React.FC = () => {
     </DashboardContainer>
   );
 };
+
+export default DashboardPage;

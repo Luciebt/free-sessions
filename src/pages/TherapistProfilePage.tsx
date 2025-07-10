@@ -60,7 +60,7 @@ const BookingButton = styled(Button)`
   }
 `;
 
-export const TherapistProfilePage: React.FC = () => {
+const TherapistProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -154,3 +154,5 @@ export const TherapistProfilePage: React.FC = () => {
     </ProfileContainer>
   );
 };
+
+export default TherapistProfilePage;

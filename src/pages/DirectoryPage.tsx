@@ -61,7 +61,7 @@ const UnapprovedActions = styled.div`
   margin-top: ${theme.spacing.medium};
 `;
 
-export const DirectoryPage: React.FC = () => {
+const DirectoryPage: React.FC = () => {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const { session } = useAuth();
   const isAdmin =
@@ -127,3 +127,4 @@ export const DirectoryPage: React.FC = () => {
   );
 };
 
+export default DirectoryPage;
