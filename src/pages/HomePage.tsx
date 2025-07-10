@@ -1,69 +1,39 @@
-import React from "react";
-import styled from "styled-components";
-import Button from "../components/common/Button";
-import Card from "../components/common/Card";
-import theme from "../styles/theme";
-import { useAuth } from "../features/auth/AuthContext";
-
-const HomeContainer = styled.div`
-  padding: ${theme.spacing.large};
-  text-align: center;
-  background-color: ${theme.colors.background};
-  min-height: calc(100vh - 120px); // Adjust based on header/footer height
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Title = styled.h1`
-  color: ${theme.colors.primary};
-  font-size: ${theme.typography.h1.fontSize};
-  margin-bottom: ${theme.spacing.medium};
-`;
-
-const Subtitle = styled.p`
-  color: ${theme.colors.text};
-  font-size: ${theme.typography.body.fontSize};
-  margin-bottom: ${theme.spacing.large};
-`;
-
-const ButtonContainer = styled.div`
-  margin-top: ${theme.spacing.large};
-  display: flex;
-  gap: ${theme.spacing.medium};
-  justify-content: center;
-`;
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../features/auth/AuthContext';
 
 const HomePage: React.FC = () => {
   const { session } = useAuth();
-  const isAdmin =
-    session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
+  const isAdmin = session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
 
   return (
-    <HomeContainer>
-      <Card>
-        <Title>Welcome to Free Sessions During the Holidays</Title>
-        <Subtitle>
-          Find a therapist to support you during the holiday season.
-        </Subtitle>
-        <ButtonContainer>
-          <Button onClick={() => (window.location.href = "/directory")}>
-            View Directory
-          </Button>
-          <Button variant="text" onClick={() => alert("Contact Us clicked!")}>
-            Contact Us
-          </Button>
+    <div className="min-h-[calc(100vh-120px)] flex flex-col items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-4">
+          Find Your Support During the Holidays
+        </h1>
+        <p className="text-xl sm:text-2xl text-gray-600 font-medium mb-8">
+          Connecting individuals with free therapy sessions to foster well-being and resilience.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link
+            to="/directory"
+            className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-secondary md:py-4 md:text-lg md:px-10 shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+          >
+            View Therapist Directory
+          </Link>
           {isAdmin && (
-            <Button onClick={() => (window.location.href = "/admin")}>
+            <Link
+              to="/admin"
+              className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-accent hover:bg-lightAccent md:py-4 md:text-lg md:px-10 shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+            >
               Go to Admin Page
-            </Button>
+            </Link>
           )}
-        </ButtonContainer>
-      </Card>
-    </HomeContainer>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default HomePage;
-

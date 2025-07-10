@@ -4,7 +4,6 @@ import { getAllTherapists } from "services/therapistService";
 import { TherapistCard } from "features/directory/TherapistCard";
 import { useAuth } from "../features/auth/AuthContext";
 import { Link } from "react-router-dom";
-import { FaLanguage, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
 
 const DirectoryPage: React.FC = () => {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
