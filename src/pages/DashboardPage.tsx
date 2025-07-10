@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useAuth } from 'features/auth/AuthContext';
 import { signOut } from 'services/authService';
@@ -41,7 +41,7 @@ export const DashboardPage: React.FC = () => {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     if (session?.user?.id) {
       try {
         const profile = await getTherapist(session.user.id);
@@ -53,11 +53,11 @@ export const DashboardPage: React.FC = () => {
       }
     }
     setLoadingProfile(false);
-  };
+  }, [session]);
 
   useEffect(() => {
     fetchProfile();
-  }, [session]);
+  }, [fetchProfile]);
 
   const handleSaveProfile = async (updatedProfile: Therapist) => {
     if (!session?.user?.id) return;

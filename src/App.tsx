@@ -11,7 +11,7 @@ import { AdminPage } from './pages/AdminPage';
 import { TherapistProfilePage } from './pages/TherapistProfilePage';
 import { AuthProvider } from './features/auth/AuthContext';
 import { ProtectedRoute } from './features/auth/ProtectedRoute';
-import './App.css';
+
 
 const AppContainer = styled.div`
   display: flex;
