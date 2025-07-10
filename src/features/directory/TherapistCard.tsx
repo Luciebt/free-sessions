@@ -1,7 +1,6 @@
 import React from "react";
 import { Therapist } from "types/Therapist";
-import Button from "../../components/common/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   FaLanguage,
   FaStar,
@@ -17,25 +16,22 @@ interface TherapistCardProps {
 }
 
 export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
-  const navigate = useNavigate();
-
-  const handleViewMore = () => {
-    navigate(`/therapist/${therapist.id}`);
-  };
-
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 m-4 w-72 min-h-72 flex flex-col justify-between text-left">
+    <Link
+      to={`/therapist/${therapist.id}`}
+      className="bg-white rounded-lg shadow-md p-6 m-4 w-72 min-h-72 flex flex-col justify-between text-left cursor-pointer hover:shadow-lg transform hover:-translate-y-1 transition duration-300 ease-in-out hover:bg-accent"
+    >
       <div>
         <h3 className="text-primary text-2xl font-semibold mb-2">
           {therapist.fullName}
         </h3>
         <p className="text-text text-base mb-4 flex-grow">{therapist.bio}</p>
         <p className="text-lightText text-sm mb-2 flex items-center">
-          <FaLanguage className="mr-2 text-primary text-lg" />
+          <FaLanguage className="mr-2 text-primary text-lg" />{" "}
           {therapist.languages.join(", ")}
         </p>
         <p className="text-lightText text-sm mb-2 flex items-center">
-          <FaStar className="mr-2 text-primary text-lg" />
+          <FaStar className="mr-2 text-primary text-lg" />{" "}
           {therapist.specialties.join(", ")}
         </p>
         <p className="text-lightText text-sm mb-2 flex items-center">
@@ -45,9 +41,7 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
         {therapist.location.city && (
           <p className="text-lightText text-sm mb-2 flex items-center">
             <FaMapMarkerAlt className="mr-2 text-primary text-lg" />
-            <strong>
-              {therapist.location.city}, {therapist.location.country}
-            </strong>
+            {therapist.location.city}, {therapist.location.country}
           </p>
         )}
         {therapist.location.onlineOnly && (
@@ -76,11 +70,6 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
           </p>
         )}
       </div>
-      <div className="mt-4 flex justify-center">
-        <Button onClick={handleViewMore} className="w-full">
-          View Profile
-        </Button>
-      </div>
-    </div>
+    </Link>
   );
 };

@@ -1,72 +1,26 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { Therapist } from "types/Therapist";
 import { getAllTherapists, updateTherapist } from "services/therapistService";
 import { TherapistCard } from "features/directory/TherapistCard";
-import theme from "../styles/theme";
 import { useAuth } from "../features/auth/AuthContext";
 import Button from "../components/common/Button";
-import { useNavigate } from "react-router-dom";
-
-const DirectoryContainer = styled.div`
-  padding: ${theme.spacing.large};
-  background-color: ${theme.colors.background};
-  min-height: calc(100vh - 120px);
-`;
-
-const Title = styled.h2`
-  color: ${theme.colors.primary};
-  font-size: ${theme.typography.h1.fontSize};
-  text-align: center;
-  margin-bottom: ${theme.spacing.large};
-`;
-
-const SectionTitle = styled.h3`
-  color: ${theme.colors.secondary};
-  font-size: ${theme.typography.h2.fontSize};
-  margin-top: ${theme.spacing.xLarge};
-  margin-bottom: ${theme.spacing.medium};
-`;
-
-const TherapistList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: ${theme.spacing.medium};
-`;
-
-const UnapprovedCard = styled.div`
-  background-color: ${theme.colors.white};
-  border-radius: ${theme.borderRadius};
-  box-shadow: ${theme.boxShadow};
-  padding: ${theme.spacing.medium};
-  margin: ${theme.spacing.small};
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
-  border: 2px solid ${theme.colors.secondary};
-`;
-
-const UnapprovedName = styled.h4`
-  color: ${theme.colors.primary};
-  margin-top: 0;
-  margin-bottom: ${theme.spacing.small};
-`;
-
-const UnapprovedActions = styled.div`
-  display: flex;
-  gap: ${theme.spacing.small};
-  margin-top: ${theme.spacing.medium};
-`;
+import { Link } from "react-router-dom";
 
 const DirectoryPage: React.FC = () => {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
+  const [filteredTherapists, setFilteredTherapists] = useState<Therapist[]>([]);
+  const [filters, setFilters] = useState({
+    languages: "",
+    specialties: "",
+    targetGroups: "",
+    onlineOnly: false,
+    available: false,
+    location: "",
+  });
+
   const { session } = useAuth();
   const isAdmin =
     session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
-  const navigate = useNavigate();
 
   const fetchAllTherapists = () => {
     getAllTherapists().then(setTherapists);
@@ -76,54 +30,224 @@ const DirectoryPage: React.FC = () => {
     fetchAllTherapists();
   }, []);
 
+  useEffect(() => {
+    const applyFilters = () => {
+      let tempTherapists = therapists;
+
+      if (filters.languages) {
+        tempTherapists = tempTherapists.filter((t) =>
+          t.languages.some((lang) =>
+            lang.toLowerCase().includes(filters.languages.toLowerCase()),
+          ),
+        );
+      }
+      if (filters.specialties) {
+        tempTherapists = tempTherapists.filter((t) =>
+          t.specialties.some((spec) =>
+            spec.toLowerCase().includes(filters.specialties.toLowerCase()),
+          ),
+        );
+      }
+      if (filters.targetGroups) {
+        tempTherapists = tempTherapists.filter((t) =>
+          t.targetGroups.some((group) =>
+            group.toLowerCase().includes(filters.targetGroups.toLowerCase()),
+          ),
+        );
+      }
+      if (filters.onlineOnly) {
+        tempTherapists = tempTherapists.filter((t) => t.location.onlineOnly);
+      }
+      if (filters.available) {
+        tempTherapists = tempTherapists.filter((t) => !t.busy);
+      }
+      if (filters.location) {
+        tempTherapists = tempTherapists.filter(
+          (t) =>
+            (t.location.city &&
+              t.location.city
+                .toLowerCase()
+                .includes(filters.location.toLowerCase())) ||
+            (t.location.country &&
+              t.location.country
+                .toLowerCase()
+                .includes(filters.location.toLowerCase())),
+        );
+      }
+
+      setFilteredTherapists(tempTherapists);
+    };
+
+    applyFilters();
+  }, [therapists, filters]);
+
   const handleApprove = async (therapist: Therapist) => {
     await updateTherapist(therapist.id, { approved: true });
     fetchAllTherapists();
   };
 
-  const handleViewProfile = (id: string) => {
-    navigate(`/therapist/${id}`);
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    const type = e.target.type;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const unapprovedTherapists = therapists.filter((t) => !t.approved);
-  const approvedTherapists = therapists.filter((t) => t.approved);
+  const approvedTherapists = filteredTherapists.filter((t) => t.approved);
 
   return (
-    <DirectoryContainer>
-      <Title>Therapist Directory</Title>
+    <div className="p-6 bg-background min-h-[calc(100vh-120px)]">
+      <h2 className="text-primary text-4xl font-bold text-center mb-8">
+        Therapist Directory
+      </h2>
+
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 className="text-secondary text-2xl font-semibold mb-4">
+          Filter Therapists
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label
+              htmlFor="languages"
+              className="block text-text text-sm font-medium mb-1"
+            >
+              Languages
+            </label>
+            <input
+              type="text"
+              id="languages"
+              name="languages"
+              value={filters.languages}
+              onChange={handleFilterChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="e.g., English, Spanish"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="specialties"
+              className="block text-text text-sm font-medium mb-1"
+            >
+              Specialties
+            </label>
+            <input
+              type="text"
+              id="specialties"
+              name="specialties"
+              value={filters.specialties}
+              onChange={handleFilterChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="e.g., Anxiety, Depression"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="targetGroups"
+              className="block text-text text-sm font-medium mb-1"
+            >
+              Target Groups
+            </label>
+            <input
+              type="text"
+              id="targetGroups"
+              name="targetGroups"
+              value={filters.targetGroups}
+              onChange={handleFilterChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="e.g., Adults, Teenagers"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="location"
+              className="block text-text text-sm font-medium mb-1"
+            >
+              Location (City/Country)
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={filters.location}
+              onChange={handleFilterChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="e.g., New York, USA"
+            />
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="onlineOnly"
+              name="onlineOnly"
+              checked={filters.onlineOnly}
+              onChange={handleFilterChange}
+              className="mr-2"
+            />
+            <label
+              htmlFor="onlineOnly"
+              className="text-text text-sm font-medium"
+            >
+              Online Only
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="available"
+              name="available"
+              checked={filters.available}
+              onChange={handleFilterChange}
+              className="mr-2"
+            />
+            <label
+              htmlFor="available"
+              className="text-text text-sm font-medium"
+            >
+              Available
+            </label>
+          </div>
+        </div>
+      </div>
 
       {isAdmin && unapprovedTherapists.length > 0 && (
         <>
-          <SectionTitle>Unapproved Therapists (Admin View)</SectionTitle>
-          <TherapistList>
+          <h3 className="text-secondary text-3xl font-semibold mt-8 mb-4">
+            Unapproved Therapists (Admin)
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4">
             {unapprovedTherapists.map((therapist) => (
-              <UnapprovedCard key={therapist.id}>
-                <UnapprovedName>{therapist.fullName}</UnapprovedName>
-                <p>{therapist.email}</p>
-                <UnapprovedActions>
-                  <Button onClick={() => handleApprove(therapist)}>
-                    Approve
-                  </Button>
-                  <Button
-                    onClick={() => handleViewProfile(therapist.id)}
-                    variant="secondary"
-                  >
-                    View Therapist
-                  </Button>
-                </UnapprovedActions>
-              </UnapprovedCard>
+              <Link
+                key={therapist.id}
+                to={`/therapist/${therapist.id}`}
+                className="bg-white rounded-lg shadow-md p-4 w-64 flex flex-col justify-between text-left border-2 border-secondary cursor-pointer hover:shadow-lg transform hover:-translate-y-1 transition duration-300 ease-in-out hover:bg-accent"
+              >
+                <div>
+                  <h4 className="text-primary text-lg font-semibold mb-2">
+                    {therapist.fullName}
+                  </h4>
+                  <p className="text-text text-base">{therapist.email}</p>
+                </div>
+              </Link>
             ))}
-          </TherapistList>
-          <SectionTitle>Approved Therapists</SectionTitle>
+          </div>
+          <h3 className="text-secondary text-3xl font-semibold mt-8 mb-4">
+            Approved Therapists
+          </h3>
         </>
       )}
 
-      <TherapistList>
+      <div className="flex flex-wrap justify-center gap-4">
         {approvedTherapists.map((therapist) => (
           <TherapistCard key={therapist.id} therapist={therapist} />
         ))}
-      </TherapistList>
-    </DirectoryContainer>
+      </div>
+    </div>
   );
 };
 

@@ -71,7 +71,7 @@ const TherapistProfilePage: React.FC = () => {
 
   return (
     <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
-      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-4xl text-left">
+      <div className="bg-accent rounded-lg p-6 w-full max-w-4xl text-left">
         <h1 className="text-primary text-3xl font-bold mb-4">
           {therapist.fullName}
         </h1>
@@ -145,4 +145,3 @@ const TherapistProfilePage: React.FC = () => {
 };
 
 export default TherapistProfilePage;
-
