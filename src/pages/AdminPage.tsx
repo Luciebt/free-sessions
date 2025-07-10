@@ -108,7 +108,7 @@ export const AdminPage: React.FC = () => {
   };
 
   const exportToCsv = (data: Therapist[]) => {
-    const headers = ["id", "email", "fullName", "bio", "languages", "specialties", "targetGroups", "location", "schedulingLink", "approved"].join(',');
+    const headers = ["id", "email", "fullName", "bio", "languages", "specialties", "targetGroups", "location", "schedulingLink", "approved", "busy", "personalLink"].join(',');
     const rows = data.map(obj => {
       const languages = JSON.stringify(obj.languages);
       const specialties = JSON.stringify(obj.specialties);
@@ -132,6 +132,8 @@ export const AdminPage: React.FC = () => {
         escapeCsvString(location),
         `"${obj.schedulingLink}"`,
         approved,
+        obj.busy ? 'TRUE' : 'FALSE',
+        obj.personalLink ? `"${obj.personalLink}"` : '',
       ].join(',');
     });
     return [headers, ...rows].join('\n');

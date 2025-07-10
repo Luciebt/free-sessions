@@ -14,6 +14,7 @@ export const mockTherapists: Therapist[] = [
     },
     schedulingLink: 'https://calendly.com/janedoe',
     approved: true,
+    busy: false,
   },
   {
     id: '2',
@@ -30,5 +31,6 @@ export const mockTherapists: Therapist[] = [
     },
     schedulingLink: 'https://calendly.com/johnsmith',
     approved: true,
+    busy: true,
   },
 ];

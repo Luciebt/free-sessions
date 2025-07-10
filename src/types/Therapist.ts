@@ -14,4 +14,6 @@ export interface Therapist {
   };
   schedulingLink: string;
   approved: boolean;
+  busy: boolean;
+  personalLink?: string;
 }

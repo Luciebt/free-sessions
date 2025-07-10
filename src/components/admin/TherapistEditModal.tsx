@@ -118,6 +118,8 @@ export const TherapistEditModal: React.FC<TherapistEditModalProps> = ({ therapis
           [name]: value,
         },
       }));
+    } else if (name === 'busy') {
+      setFormData(prev => ({ ...prev, [name]: (e.target as HTMLInputElement).checked }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
@@ -225,6 +227,24 @@ export const TherapistEditModal: React.FC<TherapistEditModalProps> = ({ therapis
               id="schedulingLink"
               name="schedulingLink"
               value={formData.schedulingLink}
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <CheckboxContainer>
+            <Checkbox
+              id="busy"
+              name="busy"
+              checked={formData.busy}
+              onChange={handleChange}
+            />
+            <Label htmlFor="busy">Busy</Label>
+          </CheckboxContainer>
+          <FormGroup>
+            <Label htmlFor="personalLink">Personal Website Link</Label>
+            <Input
+              id="personalLink"
+              name="personalLink"
+              value={formData.personalLink || ''}
               onChange={handleChange}
             />
           </FormGroup>

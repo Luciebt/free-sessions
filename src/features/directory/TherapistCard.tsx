@@ -74,6 +74,12 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
         {therapist.location.onlineOnly && (
           <Details><strong>Online Only:</strong> Yes</Details>
         )}
+        {therapist.busy !== undefined && (
+          <Details><strong>Status:</strong> {therapist.busy ? 'Busy' : 'Available'}</Details>
+        )}
+        {therapist.personalLink && (
+          <Details><strong>Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">Link</a></Details>
+        )}
       </div>
       <ButtonWrapper>
         <Button onClick={handleViewMore}>View Profile</Button>

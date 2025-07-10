@@ -128,6 +128,16 @@ export const TherapistProfilePage: React.FC = () => {
             <strong>Online Only:</strong> Yes
           </DetailItem>
         )}
+        {therapist.busy !== undefined && (
+          <DetailItem>
+            <strong>Status:</strong> {therapist.busy ? 'Busy' : 'Available'}
+          </DetailItem>
+        )}
+        {therapist.personalLink && (
+          <DetailItem>
+            <strong>Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">{therapist.personalLink}</a>
+          </DetailItem>
+        )}
         <BookingButton
           onClick={() => window.open(therapist.schedulingLink, "_blank")}
           disabled={!therapist.schedulingLink}
