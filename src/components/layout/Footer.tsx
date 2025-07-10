@@ -1,13 +1,15 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import theme from '../../styles/theme';
 
 const FooterContainer = styled.footer`
-  background-color: #f8f9fa;
-  padding: 1rem 2rem;
-  border-top: 1px solid #e9ecef;
+  background-color: ${theme.colors.primary};
+  padding: ${theme.spacing.medium} ${theme.spacing.large};
+  border-top: 1px solid ${theme.colors.secondary};
   text-align: center;
-  margin-top: 2rem;
+  margin-top: ${theme.spacing.xLarge};
+  color: ${theme.colors.white};
 `;
 
 export const Footer: React.FC = () => {

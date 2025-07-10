@@ -3,32 +3,35 @@ import React from 'react';
 import styled from 'styled-components';
 import { useAuth } from 'features/auth/AuthContext';
 import { signOut } from 'services/authService';
+import theme from '../../styles/theme';
 
 const HeaderContainer = styled.header`
-  background-color: #f8f9fa;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #e9ecef;
+  background-color: ${theme.colors.primary};
+  padding: ${theme.spacing.medium} ${theme.spacing.large};
+  border-bottom: 1px solid ${theme.colors.secondary};
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const Logo = styled.h1`
-  font-size: 1.5rem;
+  font-size: ${theme.typography.h2.fontSize};
   margin: 0;
+  color: ${theme.colors.white};
 `;
 
 const Nav = styled.nav`
   a, button {
-    margin-left: 1rem;
+    margin-left: ${theme.spacing.medium};
     text-decoration: none;
-    color: #333;
+    color: ${theme.colors.white};
     background: none;
     border: none;
     cursor: pointer;
+    font-size: ${theme.typography.body.fontSize};
 
     &:hover {
-      color: #007bff;
+      color: ${theme.colors.accent};
     }
   }
 `;
