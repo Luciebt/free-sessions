@@ -1,62 +1,66 @@
 import React from "react";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useAuth } from "features/auth/AuthContext";
 import { signOut } from "services/authService";
-import theme from "../../styles/theme";
-
-const HeaderContainer = styled.header`
-  background-color: ${theme.colors.primary};
-  padding: ${theme.spacing.medium} ${theme.spacing.large};
-  border-bottom: 1px solid ${theme.colors.secondary};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Logo = styled.h1`
-  font-size: ${theme.typography.h2.fontSize};
-  margin: 0;
-  color: ${theme.colors.white};
-`;
-
-const Nav = styled.nav`
-  a,
-  button {
-    margin-left: ${theme.spacing.medium};
-    text-decoration: none;
-    color: ${theme.colors.white};
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: ${theme.typography.body.fontSize};
-
-    &:hover {
-      color: ${theme.colors.accent};
-    }
-  }
-`;
+import {
+  FaUserMd,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaTachometerAlt,
+  FaUserShield,
+} from "react-icons/fa";
 
 export const Header: React.FC = () => {
   const { session } = useAuth();
 
   return (
-    <HeaderContainer>
-      <Logo>Free Sessions</Logo>
-      <Nav>
-        <a href="/">Home</a>
-        <a href="/directory">Directory</a>
+    <header className="bg-primary p-4 border-b border-secondary flex justify-between items-center shadow-md">
+      <Link
+        to="/"
+        className="text-white text-2xl font-bold hover:text-accent transition duration-300 ease-in-out flex items-center"
+      >
+        Free Sessions
+      </Link>
+      <nav className="flex items-center space-x-6">
+        <Link
+          to="/directory"
+          className="text-white hover:text-accent transition duration-300 ease-in-out text-lg font-medium flex items-center"
+        >
+          <FaUserMd className="mr-2" /> Directory
+        </Link>
         {session ? (
           <>
-            <a href="/dashboard">Dashboard</a>
+            <Link
+              to="/dashboard"
+              className="text-white hover:text-accent transition duration-300 ease-in-out text-lg font-medium flex items-center"
+            >
+              <FaTachometerAlt className="mr-2" /> Dashboard
+            </Link>
             {session.user.email === process.env.REACT_APP_ADMIN_EMAIL && (
-              <a href="/admin">Admin</a>
+              <Link
+                to="/admin"
+                className="text-white hover:text-accent transition duration-300 ease-in-out text-lg font-medium flex items-center"
+              >
+                <FaUserShield className="mr-2" /> Admin
+              </Link>
             )}
-            <button onClick={signOut}>Sign Out</button>
+            <button
+              onClick={signOut}
+              className="text-white hover:text-accent transition duration-300 ease-in-out text-lg font-medium bg-transparent border-none cursor-pointer flex items-center"
+            >
+              <FaSignOutAlt className="mr-2" /> Sign Out
+            </button>
           </>
         ) : (
-          <a href="/login">Therapist Login</a>
+          <Link
+            to="/login"
+            className="text-white hover:text-accent transition duration-300 ease-in-out text-lg font-medium flex items-center"
+          >
+            <FaSignInAlt className="mr-2" /> Therapist Login
+          </Link>
         )}
-      </Nav>
-    </HeaderContainer>
+      </nav>
+    </header>
   );
 };
+

@@ -108,7 +108,7 @@ const DirectoryPage: React.FC = () => {
                     onClick={() => handleViewProfile(therapist.id)}
                     variant="secondary"
                   >
-                    View Profile
+                    View Therapist
                   </Button>
                 </UnapprovedActions>
               </UnapprovedCard>

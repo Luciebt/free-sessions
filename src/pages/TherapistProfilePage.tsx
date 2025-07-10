@@ -4,6 +4,15 @@ import { Therapist } from "../types/Therapist";
 import { getTherapist, updateTherapist } from "../services/therapistService";
 import { useAuth } from "../features/auth/AuthContext";
 import Button from "../components/common/Button";
+import {
+  FaLanguage,
+  FaStar,
+  FaUsers,
+  FaMapMarkerAlt,
+  FaGlobe,
+  FaCalendarCheck,
+  FaLink,
+} from "react-icons/fa";
 
 const TherapistProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,50 +46,80 @@ const TherapistProfilePage: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">Loading therapist profile...</div>;
+    return (
+      <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
+        Loading therapist profile...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">{error}</div>;
+    return (
+      <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
+        {error}
+      </div>
+    );
   }
 
   if (!therapist) {
-    return <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">Therapist not found.</div>;
+    return (
+      <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
+        Therapist not found.
+      </div>
+    );
   }
 
   return (
     <div className="p-6 bg-background min-h-[calc(100vh-120px)] flex flex-col items-center justify-start">
       <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-4xl text-left">
-        <h1 className="text-primary text-3xl font-bold mb-4">{therapist.fullName}</h1>
-        <p className="text-text text-base leading-relaxed mb-6">{therapist.bio}</p>
-        <p className="text-text text-base mb-2">
-          <strong className="text-primary">Languages:</strong> {therapist.languages.join(", ")}
+        <h1 className="text-primary text-3xl font-bold mb-4">
+          {therapist.fullName}
+        </h1>
+        <p className="text-text text-base leading-relaxed mb-6">
+          {therapist.bio}
         </p>
-        <p className="text-text text-base mb-2">
-          <strong className="text-primary">Specialties:</strong> {therapist.specialties.join(", ")}
+        <p className="text-text text-base mb-2 flex items-center">
+          <FaLanguage className="mr-2 text-primary" />
+          {therapist.languages.join(", ")}
         </p>
-        <p className="text-text text-base mb-2">
-          <strong className="text-primary">Target Groups:</strong> {therapist.targetGroups.join(", ")}
+        <p className="text-text text-base mb-2 flex items-center">
+          <FaStar className="mr-2 text-primary" />
+          {therapist.specialties.join(", ")}
+        </p>
+        <p className="text-text text-base mb-2 flex items-center">
+          <FaUsers className="mr-2 text-primary" />
+          {therapist.targetGroups.join(", ")}
         </p>
         {therapist.location.city && (
-          <p className="text-text text-base mb-2">
-            <strong className="text-primary">Location:</strong> {therapist.location.city},{" "}
-            {therapist.location.country}
+          <p className="text-text text-base mb-2 flex items-center">
+            <FaMapMarkerAlt className="mr-2 text-primary" />{" "}
+            {therapist.location.city}, {therapist.location.country}
           </p>
         )}
         {therapist.location.onlineOnly && (
-          <p className="text-text text-base mb-2">
-            <strong className="text-primary">Online Only:</strong> Yes
+          <p className="text-text text-base mb-2 flex items-center">
+            <FaGlobe className="mr-2 text-primary" />{" "}
+            <strong>Online only</strong>
           </p>
         )}
         {therapist.busy !== undefined && (
-          <p className="text-text text-base mb-2">
-            <strong>Status:</strong> {therapist.busy ? 'Busy' : 'Available'}
+          <p className="text-text text-base mb-2 flex items-center">
+            <FaCalendarCheck className="mr-2 text-primary" />{" "}
+            {therapist.busy ? "Busy" : "Available"}
           </p>
         )}
         {therapist.personalLink && (
-          <p className="text-text text-base mb-2">
-            <strong className="text-primary">Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">{therapist.personalLink}</a>
+          <p className="text-text text-base mb-2 flex items-center">
+            <FaLink className="mr-2 text-primary" />
+            <strong>Website: </strong>{" "}
+            <a
+              href={therapist.personalLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              {therapist.personalLink}
+            </a>
           </p>
         )}
         <Button
@@ -92,7 +131,11 @@ const TherapistProfilePage: React.FC = () => {
         </Button>
 
         {isAdmin && !therapist.approved && (
-          <Button onClick={handleApprove} variant="secondary" className="w-full py-3 text-lg mt-4">
+          <Button
+            onClick={handleApprove}
+            variant="secondary"
+            className="w-full py-3 text-lg mt-4"
+          >
             Approve Therapist
           </Button>
         )}
@@ -102,3 +145,4 @@ const TherapistProfilePage: React.FC = () => {
 };
 
 export default TherapistProfilePage;
+

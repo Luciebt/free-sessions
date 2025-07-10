@@ -1,52 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Therapist } from 'types/Therapist';
-import theme from '../../styles/theme';
-import Button from '../../components/common/Button';
-import { useNavigate } from 'react-router-dom';
-
-const CardContainer = styled.div`
-  background-color: ${theme.colors.white};
-  border-radius: ${theme.borderRadius};
-  box-shadow: ${theme.boxShadow};
-  padding: ${theme.spacing.large};
-  margin: ${theme.spacing.medium};
-  width: 300px; /* Fixed width for uniform size */
-  min-height: 280px; /* Fixed min-height for uniform size */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
-`;
-
-const Name = styled.h3`
-  color: ${theme.colors.primary};
-  font-size: ${theme.typography.h2.fontSize};
-  margin-top: 0;
-  margin-bottom: ${theme.spacing.small};
-`;
-
-const Bio = styled.p`
-  color: ${theme.colors.text};
-  font-size: ${theme.typography.body.fontSize};
-  margin-bottom: ${theme.spacing.medium};
-  flex-grow: 1; /* Allows bio to take up available space */
-`;
-
-const Details = styled.p`
-  color: ${theme.colors.lightText};
-  font-size: ${theme.typography.body.fontSize};
-  margin-bottom: ${theme.spacing.small};
-  strong {
-    color: ${theme.colors.text};
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: ${theme.spacing.medium};
-  display: flex;
-  justify-content: center;
-`;
+import React from "react";
+import { Therapist } from "types/Therapist";
+import Button from "../../components/common/Button";
+import { useNavigate } from "react-router-dom";
+import {
+  FaLanguage,
+  FaStar,
+  FaUsers,
+  FaMapMarkerAlt,
+  FaGlobe,
+  FaCalendarCheck,
+  FaLink,
+} from "react-icons/fa";
 
 interface TherapistCardProps {
   therapist: Therapist;
@@ -56,34 +20,67 @@ export const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
   const navigate = useNavigate();
 
   const handleViewMore = () => {
-    // Assuming a route like /therapist/:id exists
     navigate(`/therapist/${therapist.id}`);
   };
 
   return (
-    <CardContainer>
+    <div className="bg-white rounded-lg shadow-md p-6 m-4 w-72 min-h-72 flex flex-col justify-between text-left">
       <div>
-        <Name>{therapist.fullName}</Name>
-        <Bio>{therapist.bio}</Bio>
-        <Details><strong>Languages:</strong> {therapist.languages.join(', ')}</Details>
-        <Details><strong>Specialties:</strong> {therapist.specialties.join(', ')}</Details>
-        <Details><strong>Target Groups:</strong> {therapist.targetGroups.join(', ')}</Details>
+        <h3 className="text-primary text-2xl font-semibold mb-2">
+          {therapist.fullName}
+        </h3>
+        <p className="text-text text-base mb-4 flex-grow">{therapist.bio}</p>
+        <p className="text-lightText text-sm mb-2 flex items-center">
+          <FaLanguage className="mr-2 text-primary text-lg" />
+          {therapist.languages.join(", ")}
+        </p>
+        <p className="text-lightText text-sm mb-2 flex items-center">
+          <FaStar className="mr-2 text-primary text-lg" />
+          {therapist.specialties.join(", ")}
+        </p>
+        <p className="text-lightText text-sm mb-2 flex items-center">
+          <FaUsers className="mr-2 text-primary text-lg" />
+          {therapist.targetGroups.join(", ")}
+        </p>
         {therapist.location.city && (
-          <Details><strong>Location:</strong> {therapist.location.city}, {therapist.location.country}</Details>
+          <p className="text-lightText text-sm mb-2 flex items-center">
+            <FaMapMarkerAlt className="mr-2 text-primary text-lg" />
+            <strong>
+              {therapist.location.city}, {therapist.location.country}
+            </strong>
+          </p>
         )}
         {therapist.location.onlineOnly && (
-          <Details><strong>Online Only:</strong> Yes</Details>
+          <p className="text-lightText text-sm mb-2 flex items-center">
+            <FaGlobe className="mr-2 text-primary text-lg" />
+            <strong>Online only</strong>
+          </p>
         )}
         {therapist.busy !== undefined && (
-          <Details><strong>Status:</strong> {therapist.busy ? 'Busy' : 'Available'}</Details>
+          <p className="text-lightText text-sm mb-2 flex items-center">
+            <FaCalendarCheck className="mr-2 text-primary text-lg" />
+            {therapist.busy ? "Busy" : "Available"}
+          </p>
         )}
         {therapist.personalLink && (
-          <Details><strong>Website:</strong> <a href={therapist.personalLink} target="_blank" rel="noopener noreferrer">Link</a></Details>
+          <p className="text-lightText text-sm mb-2 flex items-center">
+            <FaLink className="mr-2 text-primary text-lg" />
+            <a
+              href={therapist.personalLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Link
+            </a>
+          </p>
         )}
       </div>
-      <ButtonWrapper>
-        <Button onClick={handleViewMore}>View Profile</Button>
-      </ButtonWrapper>
-    </CardContainer>
+      <div className="mt-4 flex justify-center">
+        <Button onClick={handleViewMore} className="w-full">
+          View Profile
+        </Button>
+      </div>
+    </div>
   );
 };
