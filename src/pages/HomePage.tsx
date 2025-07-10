@@ -1,10 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import Button from '../components/common/Button';
-import Card from '../components/common/Card';
-import theme from '../styles/theme';
-import { useAuth } from '../features/auth/AuthContext';
-
+import React from "react";
+import styled from "styled-components";
+import Button from "../components/common/Button";
+import Card from "../components/common/Card";
+import theme from "../styles/theme";
+import { useAuth } from "../features/auth/AuthContext";
 
 const HomeContainer = styled.div`
   padding: ${theme.spacing.large};
@@ -38,19 +37,27 @@ const ButtonContainer = styled.div`
 
 const HomePage: React.FC = () => {
   const { session } = useAuth();
-  const isAdmin = session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
+  const isAdmin =
+    session && session.user.email === process.env.REACT_APP_ADMIN_EMAIL;
 
   return (
     <HomeContainer>
       <Card>
         <Title>Welcome to Free Sessions During the Holidays</Title>
-        <Subtitle>Find a therapist to support you during the holiday season.</Subtitle>
+        <Subtitle>
+          Find a therapist to support you during the holiday season.
+        </Subtitle>
         <ButtonContainer>
-          <Button onClick={() => window.location.href = '/directory'}>View Directory</Button>
-          <Button variant="secondary" onClick={() => alert('Learn More clicked!')}>Learn More</Button>
-          <Button variant="text" onClick={() => alert('Contact Us clicked!')}>Contact Us</Button>
+          <Button onClick={() => (window.location.href = "/directory")}>
+            View Directory
+          </Button>
+          <Button variant="text" onClick={() => alert("Contact Us clicked!")}>
+            Contact Us
+          </Button>
           {isAdmin && (
-            <Button onClick={() => window.location.href = '/admin'}>Go to Admin Page</Button>
+            <Button onClick={() => (window.location.href = "/admin")}>
+              Go to Admin Page
+            </Button>
           )}
         </ButtonContainer>
       </Card>
@@ -59,3 +66,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
